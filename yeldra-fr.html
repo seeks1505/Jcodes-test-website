@@ -1,0 +1,1250 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yeldra — Paie-toi mieux, sans travailler plus.</title>
+<meta name="description" content="Vois ce que tes prestations te rapportent vraiment : ton taux horaire réel, le bon prix pour chaque offre, le temps que tu peux y consacrer.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        card: 'var(--card)',
+        border: 'var(--border)',
+        muted: 'var(--muted)',
+        'muted-foreground': 'var(--muted-foreground)',
+        primary: 'var(--primary)',
+        'primary-hover': 'var(--primary-hover)',
+        'primary-active': 'var(--primary-active)',
+        'primary-light': 'var(--primary-light)',
+        'primary-xlight': 'var(--primary-xlight)',
+        'primary-foreground': 'var(--primary-foreground)',
+        ink: 'var(--ink)',
+        'ink-foreground': 'var(--ink-foreground)',
+        'ink-muted': 'var(--ink-muted)',
+        'ink-subtle': 'var(--ink-subtle)',
+        'ink-line': 'var(--ink-line)',
+        'ink-surface': 'var(--ink-surface)',
+        teal: 'var(--teal)',
+        'teal-soft': 'var(--teal-soft)',
+        success: 'var(--success)',
+        'success-light': 'var(--success-light)',
+        'error-light': 'var(--error-light)',
+        'error-xlight': 'var(--error-xlight)',
+        destructive: 'var(--destructive)',
+        warning: 'var(--warning)',
+      },
+      fontFamily: {
+        sans: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['Geist Mono', 'ui-monospace', 'monospace'],
+      },
+      borderRadius: { DEFAULT: 'var(--radius)' },
+    },
+  },
+};
+</script>
+
+<style>
+  :root {
+    --radius: .75rem;
+    --brand-hue: 277;
+
+    --background: oklch(.99 .004 var(--brand-hue));
+    --foreground: #18181c;
+    --card: #fff;
+    --border: oklch(.92 .005 var(--brand-hue));
+    --muted: oklch(.975 .006 var(--brand-hue));
+    --muted-foreground: #5a5a61;
+
+    --primary: oklch(.64 .16 var(--brand-hue));
+    --primary-hover: oklch(.56 .165 var(--brand-hue));
+    --primary-active: oklch(.48 .155 var(--brand-hue));
+    --primary-light: #abadec;
+    --primary-xlight: #dadbf8;
+    --primary-foreground: #fafafa;
+
+    --ink: #1e2030;
+    --ink-foreground: #f4f5f9;
+    --ink-muted: #aeb0bb;
+    --ink-subtle: #777a85;
+    --ink-line: #3d3f4c;
+    --ink-surface: #2f3241;
+
+    --teal: #30a06a;
+    --teal-soft: #bcf9d3;
+    --success: #30a06a;
+    --success-light: #bcf9d3;
+    --success-foreground: #e6fcec;
+    --destructive: #df2225;
+    --error-light: #fed2cc;
+    --error-xlight: #ffecea;
+    --warning: #ef7926;
+    --ring: #abadec;
+
+    --brand-grad-from: oklch(.56 .2 var(--brand-hue));
+    --brand-grad-to: oklch(.78 .13 var(--brand-hue));
+    --brand-gradient: linear-gradient(118deg, var(--brand-grad-from) 0%, var(--brand-grad-to) 100%);
+
+    /* Layered, hue-tinted elevation — base / elevated / floating */
+    --shadow-elevated: 0 1px 2px -1px oklch(.55 .06 var(--brand-hue) / .06),
+                       0 4px 12px -4px oklch(.55 .06 var(--brand-hue) / .08);
+    --shadow-floating: 0 2px 4px -2px oklch(.45 .08 var(--brand-hue) / .10),
+                       0 12px 28px -8px oklch(.45 .08 var(--brand-hue) / .14),
+                       0 32px 64px -24px oklch(.45 .08 var(--brand-hue) / .16);
+  }
+
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  * { border-color: var(--border); }
+  ::selection { background: var(--primary); color: var(--primary-foreground); }
+
+  :where(a, button, summary):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* ---- Type scale measured off the reference (pixel-fitted) ---- */
+  .t-h1      { font-size: 56px; line-height: 60px;   letter-spacing: -.03em; font-weight: 500; }
+  .t-h2      { font-size: 46px; line-height: 52px;   letter-spacing: -.03em; font-weight: 500; }
+  .t-lead    { font-size: 20px; line-height: 36px;   font-weight: 400; }
+  .t-sub     { font-size: 20px; line-height: 30px;   font-weight: 400; }
+  .t-card-h  { font-size: 21px; line-height: 30.5px; letter-spacing: -.02em; font-weight: 500; }
+  .t-step-h  { font-size: 21px; line-height: 30px;   letter-spacing: -.02em; font-weight: 500; }
+  .t-quote   { font-size: 21px; line-height: 30.3px; letter-spacing: -.01em; font-weight: 400; }
+  @media (max-width: 39.999rem) {
+    .t-h1     { font-size: 38px; line-height: 42px; }
+    .t-h2     { font-size: 31px; line-height: 36px; }
+    .t-lead   { font-size: 17px; line-height: 30px; }
+    .t-sub    { font-size: 17px; line-height: 27px; }
+    .t-quote  { font-size: 18px; line-height: 28px; }
+  }
+
+  /* ---- Buttons ---- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    font-weight: 600; border-radius: 12px; white-space: nowrap;
+    transition: transform .18s cubic-bezier(.2,.8,.3,1), opacity .18s ease-out, background-color .18s ease-out, color .18s ease-out;
+  }
+  .btn:active { transform: translateY(1px) scale(.99); }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-primary:active { background: var(--primary-active); }
+  .btn-white { background: #fff; color: var(--primary); }
+  .btn-white:hover { background: #f2f1fd; }
+  .btn-ghost { color: var(--foreground); }
+  .btn-ghost:hover { color: var(--primary); }
+  .btn-outline { background: #fff; color: var(--foreground); border: 1px solid var(--border); }
+  .btn-outline:hover { background: var(--muted); }
+
+  .link-muted { transition: color .18s ease-out; }
+  .link-muted:hover { color: #fff; }
+
+  /* ---- Cards ---- */
+  .surface {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-elevated);
+  }
+  .feature-card { transition: transform .22s cubic-bezier(.2,.8,.3,1), box-shadow .22s ease-out; }
+  .feature-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-floating); }
+
+  /* ---- Product-UI mock primitives ---- */
+  .mock        { background: #fff; border: 1px solid var(--border); border-radius: 10px; }
+  .mock-label  { font-size: 9.5px; font-weight: 600; color: var(--foreground); letter-spacing: -.01em; }
+  .mock-key    { font-size: 8px; color: var(--muted-foreground); }
+  .mock-val    { font-size: 13px; font-weight: 700; letter-spacing: -.02em; }
+  .mock-row    { font-size: 8px; }
+  .mock-note   { font-size: 7.5px; line-height: 1.5; }
+  .mock-th     { font-size: 8px; color: var(--muted-foreground); font-weight: 400; }
+  .mock-td     { font-size: 8px; }
+  .mock-chip   { font-size: 7.5px; font-weight: 500; border-radius: 999px; padding: 2px 8px; }
+
+  /* ---- FAQ accordion ---- */
+  details.faq > summary { list-style: none; cursor: pointer; }
+  details.faq > summary::-webkit-details-marker { display: none; }
+  details.faq .icon-plus  { display: block; }
+  details.faq .icon-close { display: none; }
+  details.faq[open] .icon-plus  { display: none; }
+  details.faq[open] .icon-close { display: block; }
+
+  /* ---- Persona rail: reference shows 290px cards, 14px gaps, bleeding off both edges ---- */
+  .rail { overflow: hidden; }
+  .rail-track {
+    display: flex; gap: 14px; width: max-content;
+    animation: rail-scroll 56s linear infinite;
+    will-change: transform;
+  }
+  .rail:hover .rail-track, .rail:focus-within .rail-track { animation-play-state: paused; }
+  @keyframes rail-scroll {
+    from { transform: translate3d(-226px, 0, 0); }
+    to   { transform: translate3d(-1746px, 0, 0); }  /* -226 - 5*(290+14) */
+  }
+
+  /* Grain / texture used behind the hero */
+  .grain::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    opacity: .35; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    .rail-track { animation: none !important; transform: translate3d(-226px, 0, 0); }
+  }
+</style>
+</head>
+
+<body class="antialiased">
+
+<div class="mx-auto w-full max-w-[1440px]">
+
+  <!-- ================= HEADER ================= -->
+  <header class="sticky top-0 z-40 bg-[var(--background)]/85 backdrop-blur-md">
+    <div class="px-4 sm:px-6">
+      <div class="flex h-16 items-center justify-between">
+        <a href="#" class="flex items-center gap-2.5" aria-label="Yeldra — accueil">
+          <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="lg-mark" x1="16" y1="4" x2="16" y2="30" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#5ec7b0"/>
+                <stop offset=".55" stop-color="#7f7ce6"/>
+                <stop offset="1" stop-color="#6157ec"/>
+              </linearGradient>
+              <linearGradient id="lg-leaf" x1="16" y1="3" x2="16" y2="13" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#5df0b0"/>
+                <stop offset="1" stop-color="#33dd97"/>
+              </linearGradient>
+            </defs>
+            <path d="M3.6 6.2c0-1.1.9-1.9 2-1.7 3.1.5 5.4 3.2 5.4 6.4v14.4c0 1.2-1 2.2-2.2 2.2H5.8c-1.2 0-2.2-1-2.2-2.2V6.2Z" fill="url(#lg-mark)"/>
+            <path d="M28.4 6.2c0-1.1-.9-1.9-2-1.7-3.1.5-5.4 3.2-5.4 6.4v14.4c0 1.2 1 2.2 2.2 2.2h3c1.2 0 2.2-1 2.2-2.2V6.2Z" fill="url(#lg-mark)"/>
+            <path d="M12.3 4.4h7.4c1.4 0 2.2 1.6 1.3 2.7l-3 3.7c-.7.9-2.1.9-2.8 0l-3.1-3.7c-.9-1.1-.1-2.7 1.2-2.7Z" fill="url(#lg-leaf)"/>
+          </svg>
+          <span class="text-[23px] font-bold tracking-[-.035em] text-[#111018]">Yeldra</span>
+        </a>
+
+        <div class="flex items-center gap-4 sm:gap-6">
+          <a href="#" class="btn btn-ghost hidden text-[14px] font-medium sm:inline-flex">Se connecter</a>
+          <a href="#pricing" class="btn btn-primary h-9 rounded-[10px] px-3 text-[12px] sm:px-4 sm:text-[13px]">Essayer gratuitement</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ================= HERO ================= -->
+    <section class="px-4 sm:px-6 pt-14 sm:pt-20">
+      <h1 class="t-h1 max-w-[1000px] text-[#18181c]">
+        Paie-toi mieux,<span class="italic font-medium text-[var(--primary)]"> sans travailler plus.</span>
+      </h1>
+
+      <p class="t-lead mt-8 max-w-[575px] text-[#2b2b32]">
+        Vois ce que tes prestations te rapportent <strong class="font-semibold text-[#18181c]">vraiment</strong> :
+        ton taux horaire réel, le bon prix pour chaque offre, le temps que tu peux y consacrer.
+        Décide <strong class="font-semibold text-[#18181c]">avant</strong> d'envoyer tes devis.
+      </p>
+
+      <a href="#pricing" class="btn btn-primary mt-[34px] h-12 px-6 text-[14px]">
+        Créer mon compte gratuitement
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+
+      <p class="mt-4 text-[14px] text-[var(--muted-foreground)]">
+        Essai gratuit de 14 jours, sans carte bancaire. Annulable en un clic.
+      </p>
+
+      <!-- Hero visual: photograph + floating product panels -->
+      <figure class="grain relative mt-10 aspect-[660/568] w-full overflow-hidden rounded-2xl lg:aspect-[1392/640]">
+        <img src="https://placehold.co/1320x1136/cfc9c2/cfc9c2?text=+" alt="Une freelance travaille sur son ordinateur portable" class="absolute inset-0 h-full w-full object-cover">
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#2a2440]/25 via-transparent to-[#c9c2e8]/20 mix-blend-multiply"></div>
+
+        <div class="absolute inset-0 hidden p-[3.4%] sm:block">
+          <div class="relative h-full w-full">
+            <!-- Objectifs de lifestyle -->
+            <div class="absolute left-[7.8%] top-[1%] w-[36%] rounded-xl bg-white/95 p-3 shadow-[0_10px_30px_-10px_rgba(30,32,48,.35)] backdrop-blur-sm">
+              <div class="flex items-start justify-between">
+                <span class="mock-label">Objectifs de lifestyle</span>
+                <span class="grid h-4 w-4 place-items-center rounded-md bg-[var(--muted)] text-[var(--muted-foreground)]">
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                </span>
+              </div>
+              <div class="mt-3 space-y-2.5 text-center">
+                <div><div class="mock-key">Salaire net idéal</div><div class="mock-val">2 500 €/mois</div></div>
+                <div><div class="mock-key">Heures max / semaine</div><div class="mock-val">35h</div></div>
+                <div><div class="mock-key">Semaines de vacances</div><div class="mock-val">5</div></div>
+              </div>
+            </div>
+
+            <!-- Seuils de rentabilité -->
+            <div class="absolute right-[5%] top-[6.5%] w-[36%] rounded-xl bg-white/95 p-3 shadow-[0_10px_30px_-10px_rgba(30,32,48,.35)] backdrop-blur-sm">
+              <span class="mock-label">Seuils de rentabilité</span>
+              <div class="mt-3 space-y-2.5 text-center">
+                <div><div class="mock-key">Taux horaire minimum HT</div><div class="mock-val">74 € / h</div></div>
+                <div><div class="mock-key">CA annuel minimum HT</div><div class="mock-val">97 049 €</div></div>
+              </div>
+            </div>
+
+            <!-- Résultat Net prévisionnel -->
+            <div class="absolute bottom-[6%] left-[14%] w-[38%] rounded-xl bg-white/95 p-3 shadow-[0_10px_30px_-10px_rgba(30,32,48,.35)] backdrop-blur-sm">
+              <span class="mock-label">Résultat Net prévisionnel de l'année</span>
+              <dl class="mt-2.5 space-y-1">
+                <div class="mock-row flex justify-between"><dt>Objectif de chiffre d'affaires (HT)</dt><dd>116 400 €</dd></div>
+                <div class="mock-row flex justify-between"><dt>Coût total de la rémunération</dt><dd>- 97 049 €</dd></div>
+                <div class="mock-row flex justify-between"><dt>Frais professionnels budgétés (HT)</dt><dd>- 9 750 €</dd></div>
+                <div class="mock-row flex justify-between"><dt>Impôt sur les sociétés</dt><dd>- 1 440 €</dd></div>
+              </dl>
+              <div class="mt-3 flex items-baseline justify-between border-t border-[var(--border)] pt-2">
+                <span class="text-[9px] font-semibold">Total :</span>
+                <span class="text-[11px] font-bold text-[var(--teal)]">8 161 €</span>
+              </div>
+              <p class="mock-note mt-2 rounded-md bg-[var(--success-foreground)] p-2 text-[var(--teal)]">
+                ⌾ Votre scénario aboutit à un résultat positif. Félicitations, gardez le cap pour faire coller vos objectifs à la réalité.
+              </p>
+            </div>
+
+            <!-- Temps de travail prévu -->
+            <div class="absolute bottom-[9%] right-[6%] w-[34%] rounded-xl bg-white/95 p-3 shadow-[0_10px_30px_-10px_rgba(30,32,48,.35)] backdrop-blur-sm">
+              <span class="mock-label">Temps de travail prévu</span>
+              <div class="mt-2 text-center"><span class="text-[15px] font-bold tracking-[-.02em]">28h59</span> <span class="mock-key">par semaine</span></div>
+              <div class="mt-2 flex items-center gap-3">
+                <svg viewBox="0 0 36 36" class="h-9 w-9 shrink-0" aria-hidden="true">
+                  <circle cx="18" cy="18" r="16" fill="#e2607f"/>
+                  <path d="M18 2a16 16 0 0 1 0 32Z" fill="#6b6ae0"/>
+                </svg>
+                <ul class="space-y-1">
+                  <li class="mock-row flex items-center gap-1.5"><span class="h-1.5 w-1.5 rounded-full bg-[#e2607f]"></span>16h23 <span class="mock-key">Pour mes clients</span></li>
+                  <li class="mock-row flex items-center gap-1.5"><span class="h-1.5 w-1.5 rounded-full bg-[#6b6ae0]"></span>12h36 <span class="mock-key">Pour mon business</span></li>
+                </ul>
+              </div>
+              <p class="mock-note mt-2 rounded-md bg-[var(--success-foreground)] p-2 text-[var(--teal)]">
+                ⌾ Votre scénario respecte votre objectif de 35h maximum de travail par semaine, avec 5 semaines de vacances comprises.
+              </p>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </section>
+
+    <!-- ================= VALUE PROPS ================= -->
+    <section class="px-4 sm:px-6 pt-[110px] sm:pt-[152px]">
+      <h2 class="t-h2 max-w-[560px]">Des décisions prises sur des chiffres.</h2>
+      <p class="t-sub mt-3 max-w-[500px] text-[var(--muted-foreground)]">
+        Tu sais toujours quoi décider : quel prix fixer, quelle offre pousser, combien te verser sans te tromper.
+      </p>
+
+      <div class="mt-11 grid grid-cols-1 items-start gap-5 sm:grid-cols-2">
+
+        <!-- Card 1 -->
+        <article class="surface feature-card p-8">
+          <div class="flex items-center gap-2.5">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>
+            <span class="text-[14px]">Objectifs de lifestyle</span>
+          </div>
+          <h3 class="t-card-h mt-3 max-w-[80%] [text-wrap:balance]">Vis du métier que tu aimes, au rythme que tu choisis.</h3>
+          <p class="mt-4 max-w-[95%] text-[14px] leading-[22.5px] text-[var(--muted-foreground)]">
+            Tu renseignes ton salaire net idéal, tes heures max par semaine et tes semaines de congés. C'est ton point de départ.
+          </p>
+          <div class="mt-6 overflow-hidden rounded-t-xl border border-b-0 border-[var(--border)] bg-[var(--muted)] px-4 pt-4">
+            <div class="mock px-4 py-4">
+              <div class="flex items-start justify-between">
+                <span class="mock-label">Objectifs de lifestyle</span>
+                <span class="grid h-4 w-4 place-items-center rounded-md bg-[var(--muted)] text-[var(--muted-foreground)]">
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                </span>
+              </div>
+              <div class="mt-4 space-y-3 pb-1 text-center">
+                <div><div class="mock-key">Salaire net idéal</div><div class="mock-val">2 500 €/mois</div></div>
+                <div><div class="mock-key">Heures max / semaine</div><div class="mock-val">35h</div></div>
+                <div><div class="mock-key">Semaines de vacances</div><div class="mock-val">5</div></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="surface feature-card p-8">
+          <div class="flex items-center gap-2.5">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 13a9 9 0 0 1 18 0"/><path d="M12 13l4-3.5"/></svg>
+            <span class="text-[14px]">Seuils de rentabilité</span>
+          </div>
+          <h3 class="t-card-h mt-3 max-w-[80%] [text-wrap:balance]">Connais le minimum à atteindre pour bien te payer.</h3>
+          <p class="mt-4 max-w-[95%] text-[14px] leading-[22.5px] text-[var(--muted-foreground)]">
+            Selon tes objectifs lifestyle et ton statut (auto-entrepreneur, EI, EURL, SARL, etc), Yeldra calcule le chiffre d'affaires minimum à viser, et le taux horaire réel minimum à facturer.
+          </p>
+          <div class="mt-6 overflow-hidden rounded-t-xl border border-b-0 border-[var(--border)] bg-[var(--muted)] px-4 pt-4">
+            <div class="mock px-4 py-4">
+              <span class="mock-label">Seuils de rentabilité</span>
+              <div class="mt-4 space-y-3 pb-1 text-center">
+                <div><div class="mock-key">Taux horaire minimum HT <span class="text-[var(--primary-light)]">ⓘ</span></div><div class="mock-val">74 € / h</div></div>
+                <div><div class="mock-key">CA annuel minimum HT <span class="text-[var(--primary-light)]">ⓘ</span></div><div class="mock-val">97 049 €</div></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="surface feature-card p-8">
+          <div class="flex items-center gap-2.5">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12"/><path d="M3 6l1.4 1.4L7 5M3 12l1.4 1.4L7 11M3 18l1.4 1.4L7 17"/></svg>
+            <span class="text-[14px]">Indicateurs des offres</span>
+          </div>
+          <h3 class="t-card-h mt-3 max-w-[80%] [text-wrap:balance]">Découvre ce que ton travail te rapporte vraiment à l'heure.</h3>
+          <p class="mt-4 max-w-[95%] text-[14px] leading-[22.5px] text-[var(--muted-foreground)]">
+            Yeldra calcule le taux horaire réel de chaque offre, le chiffre d'affaires généré, et le temps que tu passes dessus. Tu sais exactement ce que tu gagnes.
+          </p>
+          <div class="mt-6 overflow-hidden rounded-t-xl border border-b-0 border-[var(--border)] bg-[var(--muted)] px-4 pt-4">
+            <div class="mock px-4 py-4">
+              <span class="mock-label">Indicateurs des offres</span>
+              <div class="mt-4 space-y-3 pb-1 text-center">
+                <div><div class="mock-key">Temps passé pour les clients <span class="text-[var(--primary-light)]">ⓘ</span></div><div class="mock-val">16h23 / semaine</div></div>
+                <div><div class="mock-key">Taux horaire moyen</div><div class="mock-val text-[var(--teal)]">203 €/h</div></div>
+                <div><div class="mock-key">Marge commerciale</div><div class="mock-val">100 %</div></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="surface feature-card p-8">
+          <div class="flex items-center gap-2.5">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M5 8h14"/><path d="M5 8l-2.5 6h5L5 8ZM19 8l-2.5 6h5L19 8Z"/><path d="M8 20h8"/></svg>
+            <span class="text-[14px]">Comparateur de rentabilité</span>
+          </div>
+          <h3 class="t-card-h mt-3 max-w-[80%] [text-wrap:balance]">Concentre-toi sur les offres qui te rapportent le plus.</h3>
+          <!-- Reference shows this panel as a small, deliberately illegible thumbnail (≈257×66) -->
+          <div class="mt-6 h-[66px] overflow-hidden rounded-md">
+            <div class="w-[233%] origin-top-left scale-[.429]">
+              <div class="mock overflow-hidden">
+              <div class="flex items-center justify-between gap-2 border-b border-[var(--border)] px-3 py-2">
+                <span class="mock-label">Rentabilité des offres</span>
+                <span class="mock-chip shrink-0 bg-[var(--primary)] text-white">Ajouter un produit ou service</span>
+              </div>
+              <table class="w-full">
+                <thead><tr class="border-b border-[var(--border)]">
+                  <th class="mock-th px-3 py-1.5 text-left">Offre</th>
+                  <th class="mock-th px-1 py-1.5 text-right">Objectif de CA</th>
+                  <th class="mock-th px-1 py-1.5 text-right">Prix de vente HT</th>
+                  <th class="mock-th px-1 py-1.5 text-right">Ventes</th>
+                  <th class="mock-th px-3 py-1.5 text-right">Taux horaire réel</th>
+                </tr></thead>
+                <tbody>
+                  <tr class="border-b border-[var(--border)]"><td class="mock-td px-3 py-1.5">Accompagnement dirigeant</td><td class="mock-td px-1 py-1.5 text-right">27 000 €</td><td class="mock-td px-1 py-1.5 text-right">3 000 €</td><td class="mock-td px-1 py-1.5 text-right">3</td><td class="mock-td px-3 py-1.5 text-right text-[var(--teal)]">227 €/h</td></tr>
+                  <tr class="border-b border-[var(--border)]"><td class="mock-td px-3 py-1.5">Formation d'entreprise</td><td class="mock-td px-1 py-1.5 text-right">30 000 €</td><td class="mock-td px-1 py-1.5 text-right">5 000 €</td><td class="mock-td px-1 py-1.5 text-right">2</td><td class="mock-td px-3 py-1.5 text-right text-[var(--teal)]">250 €/h</td></tr>
+                  <tr class="border-b border-[var(--border)]"><td class="mock-td px-3 py-1.5">TJM - CMO externalisée</td><td class="mock-td px-1 py-1.5 text-right">19 200 €</td><td class="mock-td px-1 py-1.5 text-right">400 €</td><td class="mock-td px-1 py-1.5 text-right">1</td><td class="mock-td px-3 py-1.5 text-right text-[var(--destructive)]">48 €/h</td></tr>
+                  <tr><td class="mock-td px-3 py-1.5">Stratégie de marque</td><td class="mock-td px-1 py-1.5 text-right">16 000 €</td><td class="mock-td px-1 py-1.5 text-right">8 000 €</td><td class="mock-td px-1 py-1.5 text-right">2</td><td class="mock-td px-3 py-1.5 text-right text-[var(--teal)]">267 €/h</td></tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= METHOD (dark) ================= -->
+    <section class="mt-[130px] bg-[var(--ink)] px-4 py-20 sm:px-6">
+      <h2 class="t-h2 text-white">Ta stratégie en quatre étapes.</h2>
+      <p class="t-sub mt-3 max-w-[500px] text-[var(--ink-muted)]">
+        Du seuil de rentabilité au suivi au réel : la démarche pour construire une activité qui te paie correctement.
+      </p>
+
+      <div class="mt-14 space-y-16">
+
+        <!-- Étape 01 -->
+        <article>
+          <p class="text-[13px] font-medium text-[var(--primary-light)]">Étape 01</p>
+          <h3 class="t-step-h mt-2.5 text-white">Découvre le CA minimum pour bien te payer.</h3>
+          <p class="mt-3 max-w-[580px] text-[14px] leading-[25px] text-[var(--ink-muted)]">
+            Yeldra calcule ton seuil de rentabilité, et le taux horaire minimum à viser pour l'atteindre sans t'épuiser.
+          </p>
+
+          <div class="mt-8 rounded-2xl bg-white p-2.5 shadow-[0_24px_60px_-24px_rgba(0,0,0,.6)]">
+            <div class="grid gap-4 sm:grid-cols-3">
+              <div class="grid content-start gap-4">
+                <div class="mock p-3">
+                  <span class="mock-label">Simulez ici le coût total de votre rémunération</span>
+                  <p class="mock-note mt-2 text-[var(--muted-foreground)]">Indiquez le salaire net mensuel que vous visez pour estimer son coût total.</p>
+                  <p class="mock-note mt-3 rounded-md bg-[var(--muted)] p-2 text-center text-[var(--muted-foreground)]">⌾ Pour vos versements réels, utilisez <span class="text-[var(--primary)] underline">« Mes dépenses »</span></p>
+                </div>
+                <div class="mock p-3">
+                  <span class="mock-label">Rémunération nette</span>
+                  <p class="mt-6 text-center"><span class="text-[15px] font-bold tracking-[-.02em]">30 000 €/an</span> <span class="mock-key">2 500 €/mois</span></p>
+                </div>
+              </div>
+
+              <div class="mock p-3">
+                <span class="mock-label">Total à financer</span>
+                <p class="mt-2"><span class="text-[17px] font-bold tracking-[-.02em]">97 049 €</span> <span class="mock-key">4 516,03 €/mois</span></p>
+                <p class="mock-key">+ 42 857 € de dividendes</p>
+                <div class="mt-3 flex items-center gap-4">
+                  <svg viewBox="0 0 36 36" class="h-16 w-16 shrink-0" aria-hidden="true">
+                    <circle cx="18" cy="18" r="16" fill="#8f7fd6"/>
+                    <path d="M18 2A16 16 0 0 1 32.8 12.2L18 18Z" fill="#c96fbc"/>
+                    <path d="M18 18l14.8-5.8A16 16 0 0 1 26 32.5Z" fill="#6b6ae0"/>
+                  </svg>
+                  <ul class="space-y-1.5">
+                    <li class="mock-row flex items-center gap-1.5"><span class="h-1.5 w-1.5 rounded-full bg-[#6b6ae0]"></span>Rémunération nette</li>
+                    <li class="mock-row flex items-center gap-1.5"><span class="h-1.5 w-1.5 rounded-full bg-[#c96fbc]"></span>Contributions sociales</li>
+                    <li class="mock-row flex items-center gap-1.5"><span class="h-1.5 w-1.5 rounded-full bg-[#e2607f]"></span>Impôt sur le revenu</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="mock flex flex-col p-3">
+                <span class="mock-label">Résultat Net prévisionnel de l'année</span>
+                <dl class="mt-2.5 space-y-1.5">
+                  <div class="mock-row flex justify-between"><dt>Objectif de chiffre d'affaires (HT)</dt><dd>116 400 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Coût total de la rémunération</dt><dd>- 97 049 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Frais professionnels budgétés (HT)</dt><dd>- 8 750 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Impôt sur les sociétés</dt><dd>- 1 590 €</dd></div>
+                </dl>
+                <div class="mt-auto flex items-baseline justify-between pt-6">
+                  <span class="text-[10px] font-semibold">Total :</span>
+                  <span class="text-[13px] font-bold text-[var(--teal)]">9 011 €</span>
+                </div>
+                <p class="mock-note mt-2.5 rounded-md bg-[var(--success-foreground)] p-2 text-[var(--teal)]">
+                  ⌾ Votre scénario aboutit à un résultat positif. Félicitations, gardez le cap pour faire coller vos objectifs à la réalité.
+                </p>
+              </div>
+            </div>
+
+            <div class="mock mt-4 overflow-hidden">
+              <div class="border-b border-[var(--border)] px-3 py-2.5"><span class="mock-label">Structure de rémunération et estimation des coûts associés</span></div>
+              <div class="flex flex-wrap items-center justify-between gap-3 px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <span class="mock-row">Appliquer les données URSSAF <span class="text-[var(--primary-light)]">ⓘ</span></span>
+                  <span class="relative inline-block h-3 w-6 rounded-full bg-[var(--primary)]"><span class="absolute right-0.5 top-0.5 h-2 w-2 rounded-full bg-white"></span></span>
+                </div>
+                <div class="flex items-center gap-1 rounded-md bg-[var(--muted)] p-0.5">
+                  <span class="mock-chip text-[var(--muted-foreground)]">Auto-entrepreneur</span>
+                  <span class="mock-chip bg-[var(--primary)] text-white">Société</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="mock-row">Type de société</span>
+                  <span class="mock-row rounded-md border border-[var(--border)] px-2 py-1">EURL ⌄</span>
+                </div>
+              </div>
+              <div class="overflow-x-auto px-3 pb-3">
+                <table class="w-full min-w-[520px] border-separate border-spacing-0">
+                  <thead>
+                    <tr>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1"></th>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1">Mensuel</th>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1" colspan="4">Annuel</th>
+                    </tr>
+                    <tr>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1 text-left">Rémunération</th>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1">Net payé</th>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1">Net payé</th>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1">Impôt sur le revenu</th>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1">Contributions sociales</th>
+                      <th class="mock-th border border-[var(--border)] px-2 py-1">Coût total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1">Salaire</td>
+                      <td class="mock-td border-2 border-[var(--primary-light)] px-2 py-1 text-right">2 500 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right">30 000 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right"><span class="rounded bg-[#fcf9ea] px-1">6,58 %</span> 2 203 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right"><span class="rounded bg-[#fcf9ea] px-1">31,22 %</span> 14 618 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right">54 192 €</td>
+                    </tr>
+                    <tr>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1">Dividendes</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1"></td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right">30 000 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right"><span class="rounded bg-[#fcf9ea] px-1">12,8 %</span> 5 486 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right"><span class="rounded bg-[#fcf9ea] px-1">17,2 %</span> 7 371 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right">42 857 €</td>
+                    </tr>
+                    <tr>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1"></td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1"></td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right">60 000 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right">7 688 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right">21 990 €</td>
+                      <td class="mock-td border border-[var(--border)] px-2 py-1 text-right">97 049 €</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="flex flex-wrap items-center gap-6 px-3 pb-2">
+                <span class="mock-row">Imposition de la société</span>
+                <span class="mock-row">Imposition des dividendes <span class="text-[var(--primary-light)]">ⓘ</span></span>
+              </div>
+              <div class="flex flex-wrap items-center gap-3 px-3 pb-3">
+                <span class="mock-row rounded-md border border-[var(--border)] px-2 py-1">Impôt sur les sociétés ⌄</span>
+                <span class="mock-row rounded-md border border-[var(--border)] px-2 py-1">Prélèvement forfaitaire unique ⌄</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Étape 02 -->
+        <article>
+          <p class="text-[13px] font-medium text-[var(--primary-light)]">Étape 02</p>
+          <h3 class="t-step-h mt-2.5 text-white">Construis des offres calibrées sur ta rentabilité.</h3>
+          <p class="mt-3 max-w-[620px] text-[14px] leading-[25px] text-[var(--ink-muted)]">
+            Définis tes produits et services, fixe des tarifs et des objectifs de vente cohérents pour atteindre puis dépasser ton seuil.
+          </p>
+
+          <div class="mt-8 rounded-2xl bg-white p-2.5 shadow-[0_24px_60px_-24px_rgba(0,0,0,.6)]">
+            <div class="grid gap-4 sm:grid-cols-3">
+              <div class="mock p-3">
+                <span class="mock-label">Indicateurs des offres</span>
+                <div class="mt-6 space-y-4 text-center">
+                  <div><div class="mock-key">Temps passé pour les clients <span class="text-[var(--primary-light)]">ⓘ</span></div><div class="mock-val">14h56 / semaine</div></div>
+                  <div><div class="mock-key">Taux horaire moyen</div><div class="mock-val text-[var(--teal)]">198 €/h</div></div>
+                  <div><div class="mock-key">Marge commerciale</div><div class="mock-val">100 %</div></div>
+                </div>
+              </div>
+
+              <div class="mock flex flex-col items-center p-3">
+                <span class="mock-label self-start">Progression des seuils de rentabilité</span>
+                <div class="relative mt-4 h-[70px] w-[70px]">
+                  <svg viewBox="0 0 36 36" class="h-full w-full -rotate-90" aria-hidden="true">
+                    <circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--border)" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-dasharray="92.5 97.4"/>
+                  </svg>
+                  <div class="absolute inset-0 grid place-items-center text-center">
+                    <div><div class="text-[13px] font-bold">95 %</div><div class="mock-key">de l'objectif</div></div>
+                  </div>
+                </div>
+                <p class="mock-note mt-4 rounded-md border border-[var(--primary-xlight)] bg-[#f7f7fe] p-2 text-[var(--muted-foreground)]">
+                  ⌾ Pour atteindre vos objectifs, visez un CA annuel minimum de <strong>97 049€ HT</strong>, un taux horaire minimum de <strong>74 €/h</strong> (HT), et maximum <strong>22h</strong> de travail par semaine pour vos clients.
+                </p>
+              </div>
+
+              <div class="mock flex flex-col p-3">
+                <span class="mock-label">Résultat Net prévisionnel de l'année</span>
+                <dl class="mt-2.5 space-y-1.5">
+                  <div class="mock-row flex justify-between"><dt>Objectif de chiffre d'affaires (HT)</dt><dd>92 200 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Coût total de la rémunération</dt><dd>- 97 049 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Frais professionnels budgétés (HT)</dt><dd>- 8 350 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Impôt sur les sociétés</dt><dd>- 0 €</dd></div>
+                </dl>
+                <div class="mt-auto flex items-baseline justify-between pt-6">
+                  <span class="text-[10px] font-semibold">Total :</span>
+                  <span class="text-[13px] font-bold text-[var(--destructive)]">-13 199 €</span>
+                </div>
+                <p class="mock-note mt-2.5 rounded-md bg-[var(--error-xlight)] p-2 text-[var(--destructive)]">
+                  ⌾ Votre scénario aboutit à un résultat déficitaire. Augmentez votre objectif de chiffre d'affaires ou revoyez vos frais pros à la baisse.
+                </p>
+              </div>
+            </div>
+
+            <div class="mock mt-4 overflow-hidden">
+              <div class="flex items-center justify-between gap-2 px-3 py-2.5">
+                <span class="mock-label">Rentabilité des offres</span>
+                <span class="flex shrink-0 items-center gap-2">
+                  <span class="mock-chip border border-[var(--border)] text-[var(--muted-foreground)]">▽ Filtrer</span>
+                  <span class="mock-chip bg-[var(--primary)] text-white">⊞ Ajouter un produit ou service à vendre</span>
+                </span>
+              </div>
+              <div class="overflow-x-auto px-3 pb-3">
+                <table class="w-full min-w-[560px]">
+                  <thead><tr class="border-b border-[var(--border)]">
+                    <th class="mock-th py-1.5 text-left">Offre</th>
+                    <th class="mock-th py-1.5 text-right">Objectif de CA</th>
+                    <th class="mock-th py-1.5 text-right">Prix de vente HT</th>
+                    <th class="mock-th py-1.5 text-right">Ventes réalisées</th>
+                    <th class="mock-th py-1.5 text-right">Ventes restantes</th>
+                    <th class="mock-th py-1.5 text-right">Taux horaire réel</th>
+                  </tr></thead>
+                  <tbody>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1.5">⠿ Accompagnement dirigeant</td><td class="mock-td py-1.5 text-right">27 000 €</td><td class="mock-td py-1.5 text-right">3 000 €</td><td class="mock-td py-1.5 text-right">3</td><td class="mock-td py-1.5 text-right">6</td><td class="mock-td py-1.5 text-right text-[var(--teal)]">227 €/h</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1.5">⠿ Formation d'entreprise - 2 jours (16h)</td><td class="mock-td py-1.5 text-right">30 000 €</td><td class="mock-td py-1.5 text-right">5 000 €</td><td class="mock-td py-1.5 text-right">2</td><td class="mock-td py-1.5 text-right">4</td><td class="mock-td py-1.5 text-right text-[var(--teal)]">250 €/h</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1.5">⠿ TJM - CMO externalisée</td><td class="mock-td py-1.5 text-right">19 200 €</td><td class="mock-td py-1.5 text-right">400 €</td><td class="mock-td py-1.5 text-right">1</td><td class="mock-td py-1.5 text-right">47</td><td class="mock-td py-1.5 text-right text-[var(--destructive)]">48 €/h</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1.5">⠿ Stratégie de marque</td><td class="mock-td py-1.5 text-right">16 000 €</td><td class="mock-td py-1.5 text-right">8 000 €</td><td class="mock-td py-1.5 text-right">2</td><td class="mock-td py-1.5 text-right">0</td><td class="mock-td py-1.5 text-right text-[var(--teal)]">267 €/h</td></tr>
+                    <tr class="font-semibold"><td class="mock-td py-1.5"></td><td class="mock-td py-1.5 text-right">92 200 €</td><td class="mock-td py-1.5"></td><td class="mock-td py-1.5 text-right">8</td><td class="mock-td py-1.5 text-right">57</td><td class="mock-td py-1.5 text-right text-[var(--teal)]">198 €/h</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Étape 03 -->
+        <article>
+          <p class="text-[13px] font-medium text-[var(--primary-light)]">Étape 03</p>
+          <h3 class="t-step-h mt-2.5 text-white">Anticipe tes dépenses, protège ta marge.</h3>
+          <p class="mt-3 max-w-[640px] text-[14px] leading-[25px] text-[var(--ink-muted)]">
+            Intègre tes charges et frais professionnels pour savoir ce qu'il te reste vraiment à chaque euro facturé.
+          </p>
+
+          <div class="mt-8 rounded-2xl bg-white p-2.5 shadow-[0_24px_60px_-24px_rgba(0,0,0,.6)]">
+            <div class="grid gap-4 sm:grid-cols-3">
+              <div class="mock p-3">
+                <span class="mock-label">Analyse du mois</span>
+                <div class="mt-6 space-y-4 text-center">
+                  <div><div class="mock-key">Dépense la plus élevée du mois</div><div class="mock-val">Canva</div><div class="mock-val">160 € HT</div></div>
+                  <div><div class="mock-key">Catégorie de dépenses la plus élevée du mois</div><div class="mock-val">Logiciels</div><div class="mock-val">160 € HT</div></div>
+                </div>
+              </div>
+
+              <div class="mock flex flex-col items-center p-3">
+                <span class="mock-label self-start">Budget dépensé sur l'année</span>
+                <div class="relative mt-5 h-[88px] w-[88px]">
+                  <svg viewBox="0 0 36 36" class="h-full w-full -rotate-90" aria-hidden="true">
+                    <circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--error-light)" stroke-width="3"/>
+                    <circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--destructive)" stroke-width="3" stroke-linecap="round" stroke-dasharray="42 97.4"/>
+                  </svg>
+                  <div class="absolute inset-0 grid place-items-center px-3 text-center">
+                    <div><div class="text-[11px] font-bold">3 660 € dépensés</div><div class="mock-key">sur un budget de 8 350 €</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mock flex flex-col p-3">
+                <span class="mock-label">Résultat net réel de l'année</span>
+                <dl class="mt-2.5 space-y-1.5">
+                  <div class="mock-row flex justify-between"><dt>Chiffre d'affaires (HT)</dt><dd>22 800 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Rémunération nette</dt><dd>- 4 000 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Contributions sociales</dt><dd>- 560 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Taxes et impôts</dt><dd>- 1 000 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Dépenses (HT)</dt><dd>- 3 660 €</dd></div>
+                </dl>
+                <div class="mt-auto flex items-baseline justify-between pt-5">
+                  <span class="text-[10px] font-semibold">Total :</span>
+                  <span class="text-[13px] font-bold text-[var(--teal)]">13 580 €</span>
+                </div>
+                <p class="mock-note mt-2.5 rounded-md bg-[var(--success-foreground)] p-2 text-[var(--teal)]">
+                  ⌾ Vous êtes actuellement en positif sur l'année. Bravo ! Continuez dans cette direction pour une année sereine.
+                </p>
+              </div>
+            </div>
+
+            <div class="mock mt-4 overflow-hidden">
+              <div class="px-3 pt-2.5"><span class="mock-label">Suivi des dépenses</span></div>
+              <div class="flex items-center justify-between gap-3 border-b border-[var(--border)] px-3 py-2">
+                <span class="flex items-center gap-4">
+                  <span class="mock-row border-b-2 border-[var(--primary)] pb-1.5 text-[var(--primary)]">◫ Analyse des dépenses</span>
+                  <span class="mock-row pb-1.5 text-[var(--muted-foreground)]">↻ Historique des dépenses</span>
+                </span>
+                <span class="mock-chip shrink-0 bg-[var(--primary)] text-white">⊞ Déclarer une dépense</span>
+              </div>
+
+              <div class="grid gap-5 p-3 sm:grid-cols-2">
+                <div>
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-2"><span class="mock-row w-[68px] shrink-0">Indispensable</span><span class="h-3.5 flex-1 rounded-sm bg-[var(--success-light)]"></span><span class="mock-row">2 500 €</span></div>
+                    <div class="flex items-center gap-2"><span class="mock-row w-[68px] shrink-0">Important</span><span class="h-3.5 rounded-sm bg-[#ffd2b7]" style="width:38%"></span><span class="mock-row">1 160 €</span></div>
+                    <div class="flex items-center gap-2"><span class="mock-row w-[68px] shrink-0">Facultatif</span><span class="h-3.5 w-[2px] rounded-sm bg-[var(--error-light)]"></span><span class="mock-row">0 €</span></div>
+                  </div>
+                  <table class="mt-5 w-full">
+                    <thead><tr class="border-b border-[var(--border)]"><th class="mock-th py-1 text-left">Rémunération</th><th class="mock-th py-1 text-right">Réel</th><th class="mock-th py-1 text-right">Budget</th></tr></thead>
+                    <tbody>
+                      <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Salaires nets</td><td class="mock-td py-1 text-right">4 000,00 €</td><td class="mock-td py-1 text-right">30 000,00 €</td></tr>
+                      <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Impôt sur le revenu</td><td class="mock-td py-1 text-right">1 000,00 €</td><td class="mock-td py-1 text-right">1 974,17 €</td></tr>
+                      <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Contributions sociales</td><td class="mock-td py-1 text-right">560,00 €</td><td class="mock-td py-1 text-right">9 366,55 €</td></tr>
+                      <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Dividendes nets</td><td class="mock-td py-1 text-right">-</td><td class="mock-td py-1 text-right">30 000,00 €</td></tr>
+                      <tr><td class="mock-th py-1 text-center">Total</td><td class="mock-td py-1 text-right">5 560,00 €</td><td class="mock-td py-1 text-right">71 340,72 €</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <table class="w-full self-start">
+                  <thead><tr class="border-b border-[var(--border)]"><th class="mock-th py-1 text-center">Catégorie</th><th class="mock-th py-1 text-right">Réel HT</th><th class="mock-th py-1 text-right">Budget HT</th></tr></thead>
+                  <tbody>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Prestations de services</td><td class="mock-td py-1 text-right">2 500,00 €</td><td class="mock-td py-1 text-right">2 000,00 €</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Formations et coaching</td><td class="mock-td py-1 text-right">-</td><td class="mock-td py-1 text-right">4 500,00 €</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Marketing et publicité</td><td class="mock-td py-1 text-right">-</td><td class="mock-td py-1 text-right">-</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Frais de paiement</td><td class="mock-td py-1 text-right">1 000,00 €</td><td class="mock-td py-1 text-right">400,00 €</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Logiciels</td><td class="mock-td py-1 text-right">160,00 €</td><td class="mock-td py-1 text-right">650,00 €</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Matériel</td><td class="mock-td py-1 text-right">-</td><td class="mock-td py-1 text-right">-</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Local professionnel</td><td class="mock-td py-1 text-right">-</td><td class="mock-td py-1 text-right">800,00 €</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Déplacements</td><td class="mock-td py-1 text-right">-</td><td class="mock-td py-1 text-right">-</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Taxes et impôts</td><td class="mock-td py-1 text-right">-</td><td class="mock-td py-1 text-right">-</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1">Autres achats</td><td class="mock-td py-1 text-right">-</td><td class="mock-td py-1 text-right">-</td></tr>
+                    <tr><td class="mock-th py-1 text-center">Total</td><td class="mock-td py-1 text-right">3 660,00 €</td><td class="mock-td py-1 text-right">8 350,00 €</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Étape 04 -->
+        <article>
+          <p class="text-[13px] font-medium text-[var(--primary-light)]">Étape 04</p>
+          <h3 class="t-step-h mt-2.5 text-white">Suis le réel, ajuste toute l'année.</h3>
+          <p class="mt-3 max-w-[580px] text-[14px] leading-[25px] text-[var(--ink-muted)]">
+            Enregistre tes ventes et dépenses, compare-les à ton prévisionnel, et affine ta stratégie au fil des mois.
+          </p>
+
+          <div class="mt-8 rounded-2xl bg-white p-2.5 shadow-[0_24px_60px_-24px_rgba(0,0,0,.6)]">
+            <div class="grid gap-4 sm:grid-cols-3">
+              <div class="grid content-start gap-4">
+                <div class="mock p-3">
+                  <span class="mock-label">Dernière vente</span>
+                  <div class="mt-5 space-y-0.5 text-center">
+                    <div class="text-[11px] font-semibold">Accompagnement dirigeant</div>
+                    <div class="mock-val">3 000 € TTC</div>
+                    <div class="mock-key">mar. 24 juin 2026</div>
+                  </div>
+                </div>
+                <div class="mock p-3">
+                  <span class="mock-label">Dernière dépense</span>
+                  <div class="mt-5 space-y-0.5 text-center">
+                    <div class="text-[11px] font-semibold">Salaire</div>
+                    <div class="mock-val">4 516 €</div>
+                    <div class="mock-key">mar. 1 déc. 2026</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mock flex flex-col p-3">
+                <span class="mock-label">Entrées / Sorties</span>
+                <p class="mt-4 text-center text-[11px] font-semibold">Juin — Total : <span class="text-[var(--teal)]">+ 7 040 €</span></p>
+                <div class="mt-4 flex flex-1 items-end justify-center gap-8 pb-1">
+                  <div class="flex flex-col items-center gap-1.5"><span class="w-12 rounded-sm bg-[#2f9e63]" style="height:64px"></span><span class="mock-key">12 240 €</span></div>
+                  <div class="flex flex-col items-center gap-1.5"><span class="w-12 rounded-sm bg-[#e02020]" style="height:28px"></span><span class="mock-key">-5 200 €</span></div>
+                </div>
+              </div>
+
+              <div class="mock flex flex-col p-3">
+                <span class="mock-label">Résultat net réel de l'année</span>
+                <dl class="mt-2.5 space-y-1.5">
+                  <div class="mock-row flex justify-between"><dt>Chiffre d'affaires (HT)</dt><dd>53 200 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Rémunération nette</dt><dd>- 27 000 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Contributions sociales</dt><dd>- 13 555 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Taxes et impôts</dt><dd>- 4 101 €</dd></div>
+                  <div class="mock-row flex justify-between"><dt>Dépenses (HT)</dt><dd>- 3 660 €</dd></div>
+                </dl>
+                <div class="mt-auto flex items-baseline justify-between pt-5">
+                  <span class="text-[10px] font-semibold">Total :</span>
+                  <span class="text-[13px] font-bold text-[var(--teal)]">4 884 €</span>
+                </div>
+                <p class="mock-note mt-2.5 rounded-md bg-[var(--success-foreground)] p-2 text-[var(--teal)]">
+                  ⌾ Vous êtes actuellement en positif sur l'année. Bravo ! Continuez dans cette direction pour une année sereine.
+                </p>
+              </div>
+            </div>
+
+            <div class="mock mt-4 overflow-hidden">
+              <div class="flex items-center justify-between gap-2 px-3 py-2.5">
+                <span class="mock-label">Prévisionnel de trésorerie</span>
+                <span class="mock-row shrink-0 text-[var(--muted-foreground)]">⚙ Paramètres de trésorerie</span>
+              </div>
+
+              <div class="px-3">
+                <div class="flex gap-2">
+                  <div class="flex w-[52px] shrink-0 flex-col justify-between py-1 text-right">
+                    <span class="mock-key">80 000 €</span><span class="mock-key">60 000 €</span><span class="mock-key">40 000 €</span><span class="mock-key">20 000 €</span><span class="mock-key">0 €</span>
+                  </div>
+                  <svg viewBox="0 0 600 150" preserveAspectRatio="none" class="h-[150px] w-full" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#8b89e8" stop-opacity=".22"/>
+                        <stop offset="1" stop-color="#8b89e8" stop-opacity=".02"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M0 120 C 40 118, 70 112, 100 96 C 130 80, 160 72, 200 68 C 240 64, 260 58, 300 40 C 330 27, 350 26, 380 34 C 420 45, 450 52, 500 66 C 540 77, 570 82, 600 86 L600 150 L0 150 Z" fill="url(#areaFill)"/>
+                    <path d="M0 120 C 40 118, 70 112, 100 96 C 130 80, 160 72, 200 68 C 240 64, 260 58, 300 40 C 330 27, 350 26, 380 34 C 420 45, 450 52, 500 66 C 540 77, 570 82, 600 86" fill="none" stroke="#8b89e8" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+                  </svg>
+                </div>
+                <div class="ml-[60px] flex justify-between border-t border-[var(--border)] pt-1.5">
+                  <span class="mock-key">Jan.</span><span class="mock-key">Fév.</span><span class="mock-key">Mars</span><span class="mock-key">Avr.</span><span class="mock-key">Mai</span><span class="mock-key">Juin</span><span class="mock-key">Juil.</span><span class="mock-key">Août</span><span class="mock-key">Sept.</span><span class="mock-key">Oct.</span><span class="mock-key">Nov.</span><span class="mock-key">Déc.</span>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto px-3 pb-3 pt-4">
+                <table class="w-full min-w-[620px]">
+                  <thead><tr>
+                    <th class="mock-th py-1.5 text-left"></th>
+                    <th class="mock-th py-1.5 text-right">Jan.</th><th class="mock-th py-1.5 text-right">Fév.</th><th class="mock-th py-1.5 text-right">Mars</th><th class="mock-th py-1.5 text-right">Avr.</th><th class="mock-th py-1.5 text-right">Mai</th>
+                    <th class="py-1.5 text-center"><span class="mock-chip inline-block bg-[var(--primary)] px-4 text-white">Juin</span></th>
+                    <th class="mock-th py-1.5 text-right">Juil.</th><th class="mock-th py-1.5 text-right">Août</th><th class="mock-th py-1.5 text-right">Sept.</th>
+                  </tr></thead>
+                  <tbody>
+                    <tr><td class="mock-td py-1.5">Trésorerie au début du mois</td><td class="mock-td py-1.5 text-right">30 000 €</td><td class="mock-td py-1.5 text-right">28 640 €</td><td class="mock-td py-1.5 text-right">35 840 €</td><td class="mock-td py-1.5 text-right">48 540 €</td><td class="mock-td py-1.5 text-right">50 740 €</td><td class="mock-td py-1.5 text-right">54 940 €</td><td class="mock-td py-1.5 text-right">61 980 €</td><td class="mock-td py-1.5 text-right">57 464 €</td><td class="mock-td py-1.5 text-right">52 948 €</td></tr>
+                    <tr><td class="mock-td py-1.5">Mes ventes (TTC)</td><td class="mock-td py-1.5 text-right">+ 2 640 €</td><td class="mock-td py-1.5 text-right">+ 12 240 €</td><td class="mock-td py-1.5 text-right">+ 21 840 €</td><td class="mock-td py-1.5 text-right">+ 6 240 €</td><td class="mock-td py-1.5 text-right">+ 8 840 €</td><td class="mock-td py-1.5 text-right">+ 12 240 €</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">-</td></tr>
+                    <tr><td class="mock-td py-1.5">Mes rémunérations</td><td class="mock-td py-1.5 text-right">- 2 560 €</td><td class="mock-td py-1.5 text-right">- 3 000 €</td><td class="mock-td py-1.5 text-right">- 3 000 €</td><td class="mock-td py-1.5 text-right">- 3 000 €</td><td class="mock-td py-1.5 text-right">- 3 000 €</td><td class="mock-td py-1.5 text-right">- 3 000 €</td><td class="mock-td py-1.5 text-right">- 4 516 €</td><td class="mock-td py-1.5 text-right">- 4 516 €</td><td class="mock-td py-1.5 text-right">- 4 516 €</td></tr>
+                    <tr><td class="mock-td py-1.5">Mes dépenses (TTC)</td><td class="mock-td py-1.5 text-right">- 1 200 €</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">- 3 000 €</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">- 192 €</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">-</td></tr>
+                    <tr><td class="mock-td py-1.5">TVA nette à reverser</td><td class="mock-td py-1.5 text-right">- 240 €</td><td class="mock-td py-1.5 text-right">- 2 040 €</td><td class="mock-td py-1.5 text-right">- 3 140 €</td><td class="mock-td py-1.5 text-right">- 1 040 €</td><td class="mock-td py-1.5 text-right">- 1 440 €</td><td class="mock-td py-1.5 text-right">- 2 008 €</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">-</td><td class="mock-td py-1.5 text-right">-</td></tr>
+                    <tr class="border-b border-[var(--border)]"><td class="mock-td py-1.5">Trésorerie à la fin du mois</td><td class="mock-td py-1.5 text-right">28 640 €</td><td class="mock-td py-1.5 text-right">35 840 €</td><td class="mock-td py-1.5 text-right">48 540 €</td><td class="mock-td py-1.5 text-right">50 740 €</td><td class="mock-td py-1.5 text-right">54 940 €</td><td class="mock-td py-1.5 text-right">61 980 €</td><td class="mock-td py-1.5 text-right">57 464 €</td><td class="mock-td py-1.5 text-right">52 948 €</td><td class="mock-td py-1.5 text-right">48 432 €</td></tr>
+                    <tr>
+                      <td class="mock-td py-1.5">Variation de trésorerie</td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--error-xlight)] text-center text-[var(--destructive)]">-1 360 €</span></td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--success-foreground)] text-center text-[var(--teal)]">+ 7 200 €</span></td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--success-foreground)] text-center text-[var(--teal)]">+ 12 700 €</span></td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--success-foreground)] text-center text-[var(--teal)]">+ 2 200 €</span></td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--success-foreground)] text-center text-[var(--teal)]">+ 4 200 €</span></td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--success-foreground)] text-center text-[var(--teal)]">+ 7 040 €</span></td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--error-xlight)] text-center text-[var(--destructive)]">-4 516 €</span></td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--error-xlight)] text-center text-[var(--destructive)]">-4 516 €</span></td>
+                      <td class="py-1.5"><span class="mock-chip block rounded-sm bg-[var(--error-xlight)] text-center text-[var(--destructive)]">-4 516 €</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= PERSONAS ================= -->
+    <section class="pt-[88px]">
+      <div class="px-4 sm:px-6">
+        <h2 class="t-h2 max-w-[620px]">Pensé pour les freelances qui vendent leur expertise.</h2>
+        <p class="t-sub mt-3 max-w-[580px] text-[var(--muted-foreground)]">
+          Tu factures ton temps et ton savoir-faire en prestation de service ? Yeldra calibre ta rentabilité, quel que soit ton métier.
+        </p>
+        <a href="#pricing" class="btn btn-primary mt-8 h-12 w-full px-6 text-[14px]">Créer mon compte gratuitement</a>
+      </div>
+
+      <div class="rail mt-11">
+        <div class="rail-track">
+        <figure class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/2f3130/2f3130?text=+" alt="Freelance formatrice en atelier" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Coachs &amp; formateurs</figcaption>
+        </figure>
+        <figure class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/c8cdd2/c8cdd2?text=+" alt="Deux consultantes en réunion" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Coachs &amp; formateurs</figcaption>
+        </figure>
+        <figure class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/8f8b84/8f8b84?text=+" alt="Consultants au travail dans un bureau" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Consultants &amp; experts</figcaption>
+        </figure>
+        <figure class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/6f7378/6f7378?text=+" alt="Créatif devant plusieurs écrans" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Créatifs &amp; studios</figcaption>
+        </figure>
+        <figure class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/9aa3ab/9aa3ab?text=+" alt="Développeuse indépendante" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Devs &amp; tech</figcaption>
+        </figure>
+        <figure aria-hidden="true" class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/2f3130/2f3130?text=+" alt="" data-alt="Freelance formatrice en atelier" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Coachs &amp; formateurs</figcaption>
+        </figure>
+        <figure aria-hidden="true" class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/c8cdd2/c8cdd2?text=+" alt="" data-alt="Deux consultantes en réunion" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Coachs &amp; formateurs</figcaption>
+        </figure>
+        <figure aria-hidden="true" class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/8f8b84/8f8b84?text=+" alt="" data-alt="Consultants au travail dans un bureau" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Consultants &amp; experts</figcaption>
+        </figure>
+        <figure aria-hidden="true" class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/6f7378/6f7378?text=+" alt="" data-alt="Créatif devant plusieurs écrans" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Créatifs &amp; studios</figcaption>
+        </figure>
+        <figure aria-hidden="true" class="relative aspect-[290/338] w-[290px] shrink-0 overflow-hidden rounded-2xl">
+          <img src="https://placehold.co/580x676/9aa3ab/9aa3ab?text=+" alt="" data-alt="Développeuse indépendante" class="h-full w-full object-cover">
+          <span class="pointer-events-none absolute inset-0 bg-[#3c3564] opacity-25 mix-blend-multiply"></span>
+          <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></span>
+          <figcaption class="absolute bottom-5 left-5 text-[14px] font-medium text-white">Devs &amp; tech</figcaption>
+        </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+    <section class="px-4 sm:px-6 pt-[105px]">
+      <h2 class="t-h2 max-w-[560px]">Ils ont repensé leurs offres et leurs prix.</h2>
+
+      <div class="mt-11 grid grid-cols-1 items-stretch gap-5 sm:grid-cols-3">
+
+        <figure class="surface flex flex-col p-[30px]">
+          <blockquote class="t-quote">
+            <span class="text-[var(--primary)]">“</span>J'ai fait x2 mes tarifs, augmenté ma rentabilité, et j'ai plus de monde qu'avant sans être sous l'eau.
+          </blockquote>
+          <figcaption class="mt-auto flex items-center gap-3 border-t border-[var(--border)] pt-5">
+            <img src="https://placehold.co/80x80/e8dfd8/e8dfd8?text=+" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">
+            <div>
+              <div class="text-[14px] font-bold leading-[19px]">Marie-Hélène Tomasino</div>
+              <div class="text-[14px] leading-[19px] text-[var(--muted-foreground)]">Consultante RH</div>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="surface flex flex-col p-[30px]">
+          <blockquote class="t-quote">
+            <span class="text-[var(--primary)]">“</span>J'ai supprimé certaines offres, réévalué mes prix et, surtout, gagné une clarté incroyable sur les volumes de ventes à réaliser pour ma croissance.
+          </blockquote>
+          <figcaption class="mt-auto flex items-center gap-3 border-t border-[var(--border)] pt-5">
+            <img src="https://placehold.co/80x80/f0dce6/f0dce6?text=+" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">
+            <div>
+              <div class="text-[14px] font-bold leading-[19px]">Émilie Chollet</div>
+              <div class="text-[14px] leading-[19px] text-[var(--muted-foreground)]">Experte en études Marketing B2B/B2C</div>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="surface flex flex-col p-[30px]">
+          <blockquote class="t-quote">
+            <span class="text-[var(--primary)]">“</span>Je sais à chaque instant combien je gagne en net, combien je dois vendre en brut, quand et combien dépenser, et quel ROI viser. Si l'outil coûtait 10x son prix, ça vaudrait le coup.
+          </blockquote>
+          <figcaption class="mt-auto flex items-center gap-3 border-t border-[var(--border)] pt-5">
+            <img src="https://placehold.co/80x80/dfe3ea/dfe3ea?text=+" alt="" class="h-10 w-10 shrink-0 rounded-full object-cover">
+            <div>
+              <div class="text-[14px] font-bold leading-[19px]">Laurine Blandin</div>
+              <div class="text-[14px] leading-[19px] text-[var(--muted-foreground)]">Consultante pour les restaurateurs</div>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ================= PRICING ================= -->
+    <section id="pricing" class="px-4 sm:px-6 pt-[112px]">
+      <h2 class="t-h2">Un seul plan, tout compris.</h2>
+      <p class="t-sub mt-3 text-[19px]">Commence gratuitement pendant 14 jours. Aucune carte bancaire requise.</p>
+
+      <div class="mt-11 overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-floating)]">
+        <div class="bg-[var(--ink)] px-10 pb-11 pt-11">
+          <p class="text-[14px] text-[var(--ink-muted)]">Plan Solo</p>
+          <p class="mt-8">
+            <span class="text-[52px] font-extrabold leading-none tracking-[-.03em] text-white">16,99</span>
+            <span class="ml-1.5 text-[22px] font-bold text-[var(--ink-foreground)]">€ HT / mois</span>
+          </p>
+          <p class="mt-3 text-[13px] text-[var(--ink-muted)]">soit 200 € HT / an</p>
+          <p class="mt-7 text-[19px] text-white">Avancez en toute autonomie avec clarté.</p>
+          <a href="#" class="btn btn-white mt-8 h-11 px-6 text-[14px]">Démarrer l'essai gratuit</a>
+        </div>
+
+        <div class="px-10 pb-10 pt-9">
+          <p class="max-w-[600px] text-[14px] leading-[24px] text-[var(--muted-foreground)]">
+            Pour les freelances et indépendants qui veulent bâtir une activité rentable sur des chiffres clairs. Tout est inclus, dès le premier jour.
+          </p>
+          <ul class="mt-6">
+            <li class="flex items-start gap-4 border-b border-[var(--border)] py-4">
+              <svg class="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-[14px] leading-[22px]">Ton taux horaire réel, pour ne plus jamais sous-facturer</span>
+            </li>
+            <li class="flex items-start gap-4 border-b border-[var(--border)] py-4">
+              <svg class="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-[14px] leading-[22px]">Le chiffre d'affaires minimum à viser pour bien te payer, selon ton statut</span>
+            </li>
+            <li class="flex items-start gap-4 border-b border-[var(--border)] py-4">
+              <svg class="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-[14px] leading-[22px]">Ton bénéfice projeté sur 2 ans, recalculé en temps réel</span>
+            </li>
+            <li class="flex items-start gap-4 border-b border-[var(--border)] py-4">
+              <svg class="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-[14px] leading-[22px]">Ta trésorerie mois par mois pour anticiper les creux</span>
+            </li>
+            <li class="flex items-start gap-4 border-b border-[var(--border)] py-4">
+              <svg class="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-[14px] leading-[22px]">Le suivi au réel de tes ventes et de tes dépenses</span>
+            </li>
+            <li class="flex items-start gap-4 py-4">
+              <svg class="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="text-[14px] leading-[22px]">Jusqu'à 3 entreprises gérées dans un seul abonnement</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section id="faq" class="px-4 pb-[76px] pt-[112px] sm:px-6">
+      <h2 class="t-h2">FAQ</h2>
+
+      <div class="mt-[62px]">
+        <details class="faq border-t border-[var(--border)]" open>
+          <summary class="flex items-center justify-between gap-6 py-[21px]">
+            <span class="text-[22px] leading-[30px] tracking-[-.01em]">À qui s'adresse Yeldra ?</span>
+            <span class="shrink-0 text-[var(--primary)]">
+              <svg class="icon-plus" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="icon-close" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </summary>
+          <p class="pb-7 text-[14px] leading-[23px] text-[var(--muted-foreground)]">
+            Aux freelances, indépendants et solopreneurs qui veulent comprendre la rentabilité de leur activité et construire une activité rentable sans y passer des heures.
+          </p>
+        </details>
+
+        <details class="faq border-t border-[var(--border)]">
+          <summary class="flex items-center justify-between gap-6 py-[21px]">
+            <span class="text-[22px] leading-[30px] tracking-[-.01em]">Yeldra fonctionne-t-il si je facture uniquement sur-mesure ?</span>
+            <span class="shrink-0 text-[var(--primary)]">
+              <svg class="icon-plus" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="icon-close" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </summary>
+          <p class="pb-7 text-[14px] leading-[23px] text-[var(--muted-foreground)]">
+            Oui. Tu crées une offre type pour chaque format de mission, et Yeldra recalcule ton taux horaire réel à partir des ventes que tu enregistres.
+          </p>
+        </details>
+
+        <details class="faq border-t border-[var(--border)]">
+          <summary class="flex items-center justify-between gap-6 py-[21px]">
+            <span class="text-[22px] leading-[30px] tracking-[-.01em]">Et si je travaille uniquement au TJM ?</span>
+            <span class="shrink-0 text-[var(--primary)]">
+              <svg class="icon-plus" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="icon-close" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </summary>
+          <p class="pb-7 text-[14px] leading-[23px] text-[var(--muted-foreground)]">
+            Aucun problème. Tu déclares ton TJM comme une offre, et Yeldra te dit combien de jours tu dois vendre pour atteindre ton seuil de rentabilité.
+          </p>
+        </details>
+
+        <details class="faq border-t border-[var(--border)]">
+          <summary class="flex items-center justify-between gap-6 py-[21px]">
+            <span class="text-[22px] leading-[30px] tracking-[-.01em]">Ai-je besoin de compétences en comptabilité ?</span>
+            <span class="shrink-0 text-[var(--primary)]">
+              <svg class="icon-plus" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="icon-close" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </summary>
+          <p class="pb-7 text-[14px] leading-[23px] text-[var(--muted-foreground)]">
+            Non. Tu renseignes ton salaire net idéal et ton statut, Yeldra s'occupe des cotisations, taxes et impôts à ta place.
+          </p>
+        </details>
+
+        <details class="faq border-t border-[var(--border)]">
+          <summary class="flex items-center justify-between gap-6 py-[21px]">
+            <span class="text-[22px] leading-[30px] tracking-[-.01em]">Comment fonctionne l'essai gratuit ?</span>
+            <span class="shrink-0 text-[var(--primary)]">
+              <svg class="icon-plus" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="icon-close" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </summary>
+          <p class="pb-7 text-[14px] leading-[23px] text-[var(--muted-foreground)]">
+            14 jours d'accès complet, sans carte bancaire. À la fin de l'essai, tu choisis de continuer ou non — rien n'est prélevé automatiquement.
+          </p>
+        </details>
+
+        <details class="faq border-t border-[var(--border)]">
+          <summary class="flex items-center justify-between gap-6 py-[21px]">
+            <span class="text-[22px] leading-[30px] tracking-[-.01em]">Mes données sont-elles en sécurité ?</span>
+            <span class="shrink-0 text-[var(--primary)]">
+              <svg class="icon-plus" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="icon-close" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </summary>
+          <p class="pb-7 text-[14px] leading-[23px] text-[var(--muted-foreground)]">
+            Tes données sont hébergées en Europe, chiffrées en transit et au repos, et ne sont jamais revendues à des tiers.
+          </p>
+        </details>
+
+        <details class="faq border-y border-[var(--border)]">
+          <summary class="flex items-center justify-between gap-6 py-[21px]">
+            <span class="text-[22px] leading-[30px] tracking-[-.01em]">Puis-je annuler quand je veux ?</span>
+            <span class="shrink-0 text-[var(--primary)]">
+              <svg class="icon-plus" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              <svg class="icon-close" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+          </summary>
+          <p class="pb-7 text-[14px] leading-[23px] text-[var(--muted-foreground)]">
+            Oui, en un clic depuis ton compte. Ton abonnement reste actif jusqu'à la fin de la période déjà réglée.
+          </p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[var(--ink)] px-4 pb-14 pt-[100px] sm:px-6">
+    <div class="flex flex-wrap items-center justify-between gap-6">
+      <h2 class="t-h2 text-white">De la clarté pour mieux décider.</h2>
+      <a href="#pricing" class="btn btn-primary h-11 shrink-0 rounded-[10px] px-5 text-[14px]">Démarrer gratuitement</a>
+    </div>
+
+    <div class="mt-14 grid gap-12 border-t border-[var(--ink-line)] pt-14 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:gap-16">
+      <div>
+        <a href="#" class="flex items-center gap-2.5" aria-label="Yeldra — accueil">
+          <svg width="27" height="27" viewBox="0 0 32 32" fill="#fff" aria-hidden="true">
+            <path d="M3.6 6.2c0-1.1.9-1.9 2-1.7 3.1.5 5.4 3.2 5.4 6.4v14.4c0 1.2-1 2.2-2.2 2.2H5.8c-1.2 0-2.2-1-2.2-2.2V6.2Z"/>
+            <path d="M28.4 6.2c0-1.1-.9-1.9-2-1.7-3.1.5-5.4 3.2-5.4 6.4v14.4c0 1.2 1 2.2 2.2 2.2h3c1.2 0 2.2-1 2.2-2.2V6.2Z"/>
+            <path d="M12.3 4.4h7.4c1.4 0 2.2 1.6 1.3 2.7l-3 3.7c-.7.9-2.1.9-2.8 0l-3.1-3.7c-.9-1.1-.1-2.7 1.2-2.7Z"/>
+          </svg>
+          <span class="text-[23px] font-bold tracking-[-.035em] text-white">Yeldra</span>
+        </a>
+        <p class="mt-6 max-w-[250px] text-[14px] leading-[24px] text-[var(--ink-muted)]">
+          Bien vivre de ton métier ne devrait pas être <em class="font-semibold text-[var(--ink-foreground)]">un pari.</em>
+        </p>
+      </div>
+
+      <div class="grid gap-12">
+        <nav aria-labelledby="f-produit">
+          <h3 id="f-produit" class="text-[14px] text-[var(--ink-subtle)]">Produit</h3>
+          <ul class="mt-6 space-y-[18px] text-[14px] leading-[20px] text-[var(--ink-muted)]">
+            <li><a href="#" class="link-muted">Pourquoi Yeldra ?</a></li>
+            <li><a href="#" class="link-muted">Méthode</a></li>
+            <li><a href="#pricing" class="link-muted">Tarif</a></li>
+            <li><a href="#" class="link-muted">Blog</a></li>
+            <li><a href="#faq" class="link-muted">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-labelledby="f-legal">
+          <h3 id="f-legal" class="text-[14px] text-[var(--ink-subtle)]">Légal</h3>
+          <ul class="mt-6 space-y-[18px] text-[14px] leading-[20px] text-[var(--ink-muted)]">
+            <li><a href="#" class="link-muted">Mentions légales</a></li>
+            <li><a href="#" class="link-muted">Confidentialité</a></li>
+            <li><a href="#" class="link-muted">CGV / CGU</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <p class="mt-14 border-t border-[var(--ink-line)] pt-10 text-[14px] text-[var(--ink-subtle)]">© 2026 Yeldra</p>
+  </footer>
+</div>
+
+<!-- ================= COOKIE BANNER ================= -->
+<div id="cookie" class="fixed inset-x-4 bottom-4 z-50 rounded-xl bg-white px-4 py-3.5 shadow-[var(--shadow-floating)]">
+  <div class="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3">
+    <p class="max-w-[430px] text-[12.5px] leading-[18px] text-[var(--muted-foreground)]">
+      Nous utilisons des cookies pour mesurer l'audience et améliorer Yeldra. Vous pouvez refuser sans impact sur votre navigation.
+    </p>
+    <div class="flex shrink-0 items-center gap-3">
+      <button type="button" data-cookie-dismiss class="btn btn-outline h-9 rounded-[10px] px-4 text-[14px] font-medium">Refuser</button>
+      <button type="button" data-cookie-dismiss class="btn btn-primary h-9 rounded-[10px] px-4 text-[14px] font-medium">Accepter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-cookie-dismiss]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var banner = document.getElementById('cookie');
+      if (banner) banner.remove();
+    });
+  });
+</script>
+
+</body>
+</html>
